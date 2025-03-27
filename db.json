@@ -1,0 +1,15 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "Lev",
+        "email": "levon@example.com"
+      }
+    ],
+    "otherData": [
+      {
+        "id": 1,
+        "info": "Sample info"
+      }
+    ]
+  }
