@@ -11,15 +11,14 @@
     <li><a [routerLink]="['/table']">Table</a></li>
   </ul>
   <div class="button-container">
-    <mat-slide-toggle
-      (change)="toggleTheme()"
-      class="icon-slide-toggle"></mat-slide-toggle>
+    <mat-slide-toggle (change)="toggleTheme()" class="icon-slide-toggle"></mat-slide-toggle>
+    <button mat-raised-button [routerLink]="['/signin']" class="nav-button">
+        <i class="material-icons">person</i>
+        Sign In
+      </button>
     <button mat-raised-button class="nav-button">
-      <i class="material-icons">person</i>
+      <i class="material-icons">person_add</i>
       Sign Up
-    </button>
-    <button mat-raised-button class="nav-button">
-      <i class="material-icons">person_add</i>Sign In
     </button>
   </div>
 </nav>

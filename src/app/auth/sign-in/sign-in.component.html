@@ -1,0 +1,34 @@
+<div class="auth-container">
+  <h2>Авторизация</h2>
+  <p>Введите свои учетные данные, чтобы войти в систему.</p>
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Электронная почта</mat-label>
+      <mat-icon matPrefix>email</mat-icon>
+      <input matInput formControlName="email" required />
+      <mat-error *ngIf="authForm.get('email')?.hasError('required')">Электронная почта обязательна.</mat-error>
+      <mat-error *ngIf="authForm.get('email')?.hasError('email')">Введите корректный адрес электронной почты.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Пароль</mat-label>
+      <mat-icon matPrefix>lock</mat-icon>
+      <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" required />
+      <mat-error *ngIf="authForm.get('password')?.hasError('required')">Пароль обязателен.</mat-error>
+      <mat-error *ngIf="authForm.get('password')?.hasError('minlength')">Пароль должен содержать не менее 6 символов.</mat-error>
+      <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
+        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="forgot-password-container">
+        <a href="#" class="forgot-password">Забыли пароль?</a>
+      </div>
+  
+    <div class="actions">
+      <button mat-raised-button class="full-width" color="primary" type="submit" [disabled]="authForm.invalid">Войти</button>
+    </div>
+    <div class="footer">
+        <p>Нет учетной записи? <a href="#">Зарегистрироваться</a></p>
+      </div>
+  </form>
+</div>
