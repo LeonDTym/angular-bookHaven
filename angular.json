@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-19-material-theming": {
+    "angular-bookHaven": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/angular-19-material-theming",
+            "outputPath": "dist/angular-bookHaven",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular-19-material-theming:build:production"
+              "buildTarget": "angular-bookHaven:build:production"
             },
             "development": {
-              "buildTarget": "angular-19-material-theming:build:development"
+              "buildTarget": "angular-bookHaven:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'angular-19-material-theming' title`, () => {
+  it(`should have the 'angular-bookHaven' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-19-material-theming');
+    expect(app.title).toEqual('angular-bookHaven');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-19-material-theming');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, angular-bookHaven');
   });
 });
