@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatToolbar } from '@angular/material/toolbar'
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, MatSlideToggleModule, FormsModule, MatIconModule, CommonModule, MatToolbar],
+  imports: [RouterOutlet, RouterModule, MatSlideToggleModule, FormsModule, MatIconModule, CommonModule, MatToolbar, MatButton],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -20,6 +21,12 @@ export class AppComponent {
   isDarkTheme = signal(false);
 
   constructor() {
+
+    const savedTheme = localStorage.getItem('isDarkTheme');
+    if (savedTheme) {
+      this.isDarkTheme.set(JSON.parse(savedTheme)); // Устанавливаем состояние темы
+    }
+
     effect(() => {
       if (this.isDarkTheme()) {
         this.document.documentElement.classList.add('dark');
@@ -31,6 +38,10 @@ export class AppComponent {
   }
 
   toggleTheme() {
-    this.isDarkTheme.update(isDark => !isDark);
+    this.isDarkTheme.update(isDark => {
+      const newTheme = !isDark;
+      localStorage.setItem('isDarkTheme', JSON.stringify(newTheme)); // Сохраняем новое состояние в localStorage
+      return newTheme;
+    });
   }
 }

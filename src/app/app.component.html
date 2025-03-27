@@ -1,21 +1,28 @@
-
 <nav>
-    <ul>
-        <li>
-            <div class="branding">
-                <i class="brand-icon material-icons">collections_bookmark</i>
-                <span class="brand-text">Book Haven</span>
-            </div>
-        </li>
-        <li><a [routerLink]="['/']">Home</a></li>
-        <li><a [routerLink]="['/address']">Address</a></li>
-        <li><a [routerLink]="['/table']">Table</a></li>
-       
-          <mat-slide-toggle (change)="toggleTheme()" class="icon-slide-toggle"></mat-slide-toggle>
-    </ul>
+  <ul>
+    <li>
+      <div class="branding">
+        <i class="brand-icon material-icons">collections_bookmark</i>
+        <span class="brand-text">Book Haven</span>
+      </div>
+    </li>
+    <li><a [routerLink]="['/']">Home</a></li>
+    <li><a [routerLink]="['/address']">Address</a></li>
+    <li><a [routerLink]="['/table']">Table</a></li>
+  </ul>
+  <div class="button-container">
+    <mat-slide-toggle
+      (change)="toggleTheme()"
+      class="icon-slide-toggle"></mat-slide-toggle>
+    <button mat-raised-button class="nav-button">
+      <i class="material-icons">person</i>
+      Sign Up
+    </button>
+    <button class="nav-button">
+      <i class="material-icons">person_add</i>Sign In
+    </button>
+  </div>
 </nav>
-
-
 <main>
-    <router-outlet />
+  <router-outlet />
 </main>
