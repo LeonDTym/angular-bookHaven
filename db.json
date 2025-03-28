@@ -1,15 +1,36 @@
 {
-    "users": [
-      {
-        "id": 1,
-        "name": "Lev",
-        "email": "levon@example.com"
-      }
-    ],
-    "otherData": [
-      {
-        "id": 1,
-        "info": "Sample info"
-      }
-    ]
-  }
+  "users": [
+    {
+      "id": "1",
+      "name": "Lev",
+      "email": "levon@example.com",
+      "password": "123456"
+    },
+    {
+      "id": "1290",
+      "email": "levon@example.com",
+      "password": "123456"
+    },
+    {
+      "id": "40b2",
+      "email": "levon@example.com",
+      "password": "1234567"
+    },
+    {
+      "id": "5029",
+      "email": "levon@example.com",
+      "password": "1234567"
+    },
+    {
+      "id": "6de2",
+      "email": "levon@example.com",
+      "password": "1234567"
+    }
+  ],
+  "otherData": [
+    {
+      "id": "1",
+      "info": "Sample info"
+    }
+  ]
+}

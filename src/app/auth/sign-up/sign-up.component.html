@@ -1,1 +1,6 @@
-<p>sign-up works!</p>
+<h2>Список пользователей</h2>
+<ul>
+  <li *ngFor="let user of users">
+    {{ user.name }} ({{ user.email }})
+  </li>
+</ul>

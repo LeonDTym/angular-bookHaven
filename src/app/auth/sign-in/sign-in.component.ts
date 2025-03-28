@@ -5,6 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import { ApiService } from '../../../service/api.service';
+import { AuthResponse } from '../../../service/auth-response.model'; 
 
 @Component({
   selector: 'app-sign-in',
@@ -17,7 +19,7 @@ export class SignInComponent {
   authForm: FormGroup;
   hide = signal(true);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private apiService: ApiService) {
     this.authForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -31,10 +33,20 @@ export class SignInComponent {
   
   onSubmit() {
     if (this.authForm.valid) {
-      const formData = this.authForm.value;
-      console.log('Form Data:', formData);
-      alert('Здарова кубаноид');
-      // Здесь вы можете добавить логику для отправки данных на сервер
+      const { email, password } = this.authForm.value;
+      this.apiService.login(email, password).subscribe({
+        next: (response: AuthResponse) => {
+          console.log('JWT Token:', response.token);
+          // Сохраните токен в localStorage или sessionStorage
+          localStorage.setItem('token', response.token);
+          alert('Авторизация успешна!');
+          // Здесь вы можете перенаправить пользователя на другую страницу
+        },
+        error: (err) => {
+          console.error('Ошибка авторизации:', err);
+          alert('Ошибка авторизации. Проверьте свои учетные данные.');
+        }
+      });
     }
   }
 }

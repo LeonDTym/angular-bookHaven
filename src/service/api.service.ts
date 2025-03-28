@@ -1,26 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { User } from './user.model';
+import { AuthResponse } from './auth-response.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class AuthService {
-  private apiUrl = 'http://localhost:3000';
-  private authStatus = new BehaviorSubject<boolean>(false);
+export class ApiService {
+  private baseUrl = 'http://localhost:3000';
+  // Создаем сигнал для хранения пользователей
+  users = signal<User[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  login(email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/login`, { email, password });
+  login(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, { email, password });
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.authStatus.next(false);
+  getUsers(): void {
+    this.http.get<User[]>(`${this.baseUrl}/users`).subscribe(data => {
+      this.users.set(data);
+    });
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/users/${id}`);
+  }
+
+  addUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/users`, user);
+  }
+
+  updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/users/${id}`, user);
+  }
+
+  deleteUser(id: number): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/users/${id}`);
   }
 }

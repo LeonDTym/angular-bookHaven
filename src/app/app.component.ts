@@ -1,4 +1,5 @@
 import { DOCUMENT } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -10,7 +11,7 @@ import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, MatSlideToggleModule, FormsModule, MatIconModule, CommonModule, MatToolbar, MatButton],
+  imports: [RouterOutlet, RouterModule, MatSlideToggleModule, FormsModule, MatIconModule, CommonModule, MatToolbar, MatButton, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
