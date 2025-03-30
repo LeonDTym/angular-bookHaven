@@ -12,14 +12,38 @@
   </ul>
   <div class="button-container">
     <mat-slide-toggle (change)="toggleTheme()" class="icon-slide-toggle"></mat-slide-toggle>
-    <button mat-raised-button [routerLink]="['/signin']" class="nav-button">
+    <ng-container *ngIf="!isAuthenticated(); else userInfo">
+      <button mat-raised-button [routerLink]="['/signin']" class="nav-button">
         <i class="material-icons">person</i>
         Sign In
       </button>
-    <button mat-raised-button [routerLink]="['/signup']" class="nav-button">
-      <i class="material-icons">person_add</i>
-      Sign Up
-    </button>
+      <button mat-raised-button [routerLink]="['/signup']" class="nav-button">
+        <i class="material-icons">person_add</i>
+        Sign Up
+      </button>
+    </ng-container>
+    <ng-template #userInfo>
+      <div class="user-info">
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <i class="material-icons">account_circle</i>
+          <span>{{ userName() }}</span>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item disabled>
+            <mat-icon>email</mat-icon>
+            <span>{{ userEmail() }}</span>
+          </button>
+          <button mat-menu-item [routerLink]="['/profile']">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </ng-template>
   </div>
 </nav>
 <main>
