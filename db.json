@@ -11,6 +11,12 @@
       "email": "user2@example.com",
       "password": "password2",
       "name": "User Two"
+    },
+    {
+      "id": 1743419059066,
+      "email": "user3@ex.com",
+      "password": "password3",
+      "name": "вапвапвап"
     }
   ],
   "otherData": [

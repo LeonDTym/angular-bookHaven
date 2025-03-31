@@ -2,7 +2,7 @@ const jsonServer = require('json-server');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const server = jsonServer.create();
-const router = jsonServer.router('d:\\Программы\\VsCode\\angular-bookHaven\\db.json');
+const router = jsonServer.router('D:\\!Project\\GItHub\\angular-bookHaven\\db.json');
 const middlewares = jsonServer.defaults();
 const SECRET_KEY = 'your-secret-key'; // Замените на свой секретный ключ
 const PORT = 3000;
@@ -33,7 +33,7 @@ server.post('/auth/register', (req, res) => {
   const userExists = users.find({ email }).value();
 
   if (userExists) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({ message: 'Пользователь с таким email уже зарегистрирован' });
   }
 
   const newUser = { id: Date.now(), email, password, name };

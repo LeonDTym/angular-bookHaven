@@ -1,11 +1,11 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="350px">
+  <mat-grid-list cols="3" rowHeight="350px">
     @for (card of cards | async; track card) {
       <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
         <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>
+          <!-- <mat-card-header> -->
+            <!-- <mat-card-title>
               {{card.title}}
               <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
                 <mat-icon>more_vert</mat-icon>
@@ -14,8 +14,10 @@
                 <button mat-menu-item>Expand</button>
                 <button mat-menu-item>Remove</button>
               </mat-menu>
-            </mat-card-title>
-          </mat-card-header>
+            </mat-card-title> -->
+            <!-- <img width="200px" mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+          </mat-card-header> -->
+          <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
           <mat-card-content class="dashboard-card-content">
             <div>Card Content Here</div>
           </mat-card-content>

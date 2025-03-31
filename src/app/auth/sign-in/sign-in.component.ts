@@ -40,7 +40,6 @@ export class SignInComponent {
       this.apiService.login(email, password).subscribe({
         next: (response: AuthResponse) => {
           console.log('JWT Token:', response.token);
-          alert('Авторизация успешна!');
           this.router.navigate(['/']);
         },
         error: err => {

@@ -1,6 +1,48 @@
-<h2>Список пользователей</h2>
+<div class="auth-container">
+  <h2>Регистрация</h2>
+  <p>Введите свои учетные данные, чтобы зарегистрироваться в системе.</p>
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Имя пользователя</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="signUpForm.get('name')?.hasError('required')">Имя пользователя обязательно.</mat-error>
+      <mat-error *ngIf="signUpForm.get('name')?.hasError('maxlength')">Имя пользователя не должно превышать 15 символов.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Электронная почта</mat-label>
+      <mat-icon matPrefix>email</mat-icon>
+      <input matInput formControlName="email" required />
+      <mat-error *ngIf="signUpForm.get('email')?.hasError('required')">Электронная почта обязательна.</mat-error>
+      <mat-error *ngIf="signUpForm.get('email')?.hasError('email')">Введите корректный адрес электронной почты.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width" appearance="fill">
+      <mat-label>Пароль</mat-label>
+      <mat-icon matPrefix>lock</mat-icon>
+      <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" required />
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('required')">Пароль обязателен.</mat-error>
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')">Пароль должен содержать не менее 6 символов.</mat-error>
+      <button mat-icon-button matSuffix (click)="clickEvent($event)" type="button" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide()">
+        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="actions">
+      <button mat-raised-button class="full-width" color="primary" type="submit" [disabled]="signUpForm.invalid">Войти</button>
+    </div>
+    <div class="footer">
+      <p class="footer-text">
+        Уже есть учетная запись? &nbsp;
+        <a href="/signin" class="signin-link">
+          Войти
+          <mat-icon aria-hidden="false" fontIcon="arrow_right_alt"></mat-icon>
+        </a>
+      </p>
+    </div>
+  </form>
+</div>
+<h3>Список пользователей</h3>
 <ul>
-  <li *ngFor="let user of users">
-    {{ user.name }} ({{ user.email }})
-  </li>
+  <li *ngFor="let user of users">{{ user.name }} ({{ user.email }})</li>
 </ul>

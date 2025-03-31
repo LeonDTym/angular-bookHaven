@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
 
@@ -40,9 +40,15 @@ export class ApiService {
     );
   }
 
-  register(email: string, password: string, name: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/auth/register`, { email, password, name }).pipe(
-      tap(() => console.log('User registered successfully')),
+  register(email: string, password: string, name: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/register`, { email, password, name }).pipe(
+      tap(//Логика регистрации
+          response =>{
+            this.token.set(response.token); // Сохраняем токен в сигнал
+            this.currentUser.set(response.user); // Устанавливаем текущего пользователя
+            localStorage.setItem('jwtToken', response.token); // Сохраняем токен в localStorage
+            localStorage.setItem('userName', response.user.name); // Сохраняем имя пользователя в localStorage
+          }),
       catchError(err => {
         console.error('Error during registration:', err);
         return throwError(() => err);
