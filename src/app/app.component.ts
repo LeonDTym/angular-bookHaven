@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { ApiService } from '../service/api.service'; // Импорт ApiService
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-root',

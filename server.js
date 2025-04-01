@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const server = jsonServer.create();
 const router = jsonServer.router('D:\\!Project\\GItHub\\angular-bookHaven\\db.json');
 const middlewares = jsonServer.defaults();
-const SECRET_KEY = 'your-secret-key'; // Замените на свой секретный ключ
+const SECRET_KEY = 'my-secret-key'; 
 const PORT = 3000;
 
 server.use(middlewares);
@@ -43,7 +43,7 @@ server.post('/auth/register', (req, res) => {
 
 // Middleware для проверки токена
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Получаем токен из заголовка
+  const token = req.headers['authorization']?.split(' ')[1]; 
 
   if (!token) return res.status(401).json({ message: 'Access token is missing' });
 
@@ -61,12 +61,12 @@ server.get('/protected', authenticateToken, (req, res) => {
 
 // Эндпоинт для получения текущего пользователя
 server.get('/auth/me', authenticateToken, (req, res) => {
-  console.log('Decoded user from token:', req.user); // Отладочное сообщение
+  console.log('из токена пользователь:', req.user);
   const user = router.db.get('users').find({ id: req.user.id }).value();
   if (user) {
     res.json({ id: user.id, name: user.name, email: user.email });
   } else {
-    console.error('User not found for id:', req.user.id); // Отладочное сообщение
+    console.error('если нету:', req.user.id);
     res.status(404).json({ message: 'User not found' });
   }
 });

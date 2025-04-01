@@ -19,10 +19,30 @@
       "name": "вапвапвап"
     }
   ],
-  "otherData": [
+  "books": [
     {
       "id": "1",
-      "info": "Sample info"
+      "title": "Sample info",
+      "description": "Книга не о чем",
+      "img": ""
+    },
+    {
+      "id": "2",
+      "title": "Sample info2",
+      "description": "Книга не о чем ч2",
+      "img": ""
+    }
+  ],
+  "favorite_books": [
+    {
+      "id": "1",
+      "userId": 1,
+      "bookId": "1"
+    },
+    {
+      "id": "2",
+      "userId": 1,
+      "bookId": "2"
     }
   ]
 }
