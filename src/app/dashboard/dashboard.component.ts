@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { ApiService } from '../../service/api.service';
+import { ApiService, Book } from '../../service/api.service';
 
 interface CardContent {
   title: string;
@@ -28,20 +28,16 @@ interface CardContent {
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    MatCardModule
-  ]
+    MatCardModule,
+  ],
 })
 export class DashboardComponent {
   private readonly document = inject(DOCUMENT);
   isAuthenticated = signal(false);
+  books = signal<Book[]>([]); // Сигнал для хранения списка книг
   cards = signal<CardContent[]>([]);
   // private breakpointObserver = inject(BreakpointObserver);
-  images = [
-    'nature',
-    'sky',
-    'grass',
-    'dfs'
-  ];
+  images = ['nature', 'sky', 'grass', 'dfs'];
   /** Based on the screen size, switch from standard to one column per row */
   // cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
   //   map(({ matches }) => {
@@ -60,20 +56,16 @@ export class DashboardComponent {
   //     ];
   //   })
   // );
-  
+
   constructor(private apiService: ApiService) {
-    const cards: CardContent[] = [];
-
-
     effect(() => {
       const currentUser = this.apiService.currentUser();
-      if (currentUser) {
-        this.isAuthenticated.set(true);
-      } else {
-        this.isAuthenticated.set(false);
-      }
+      this.isAuthenticated.set(!!currentUser);
     });
 
+    this.loadBooks(); // Загружаем книги при инициализации
+
+    const cards: CardContent[] = [];
 
     for (let i = 0; i < this.images.length; i++) {
       cards.push({
@@ -87,4 +79,10 @@ export class DashboardComponent {
     this.cards.set(cards);
   }
 
+  loadBooks() {
+    this.apiService.getBooks({}, '').subscribe({
+      next: books => this.books.set(books),
+      error: err => console.error('Error fetching books:', err),
+    });
+  }
 }

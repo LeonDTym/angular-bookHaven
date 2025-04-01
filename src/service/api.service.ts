@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
 
@@ -10,6 +11,15 @@ type PublicUser = Omit<User, 'password'>;
 export interface AuthResponse {
   token: string;
   user: PublicUser; // Используем PublicUser вместо User
+}
+
+export interface Book {
+  id: string;
+  title: string;
+  description: string;
+  img: string;
+  author: string;
+  publicationDate: string;
 }
 
 @Injectable({
@@ -22,8 +32,17 @@ export class ApiService {
   token = signal<string | null>(null);
   currentUser = signal<PublicUser | null>(null);
   users = signal<User[]>([]);
+  private authenticated = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {}
+
+  isAuthenticated(): Observable<boolean> {
+    return this.authenticated.asObservable();
+  }
+
+  setAuthentication(state: boolean): void {
+    this.authenticated.next(state);
+  }
 
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, { email, password }).pipe(
@@ -32,6 +51,7 @@ export class ApiService {
         this.currentUser.set(response.user); // Устанавливаем текущего пользователя
         localStorage.setItem('jwtToken', response.token); // Сохраняем токен в localStorage
         localStorage.setItem('userName', response.user.name); // Сохраняем имя пользователя в localStorage
+        this.setAuthentication(true); // Устанавливаем состояние аутентификации
       }),
       catchError(err => {
         console.error('Error during login:', err);
@@ -42,13 +62,16 @@ export class ApiService {
 
   register(email: string, password: string, name: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/auth/register`, { email, password, name }).pipe(
-      tap(//Логика регистрации
-          response =>{
-            this.token.set(response.token); // Сохраняем токен в сигнал
-            this.currentUser.set(response.user); // Устанавливаем текущего пользователя
-            localStorage.setItem('jwtToken', response.token); // Сохраняем токен в localStorage
-            localStorage.setItem('userName', response.user.name); // Сохраняем имя пользователя в localStorage
-          }),
+      tap(
+        //Логика регистрации
+        response => {
+          this.token.set(response.token); // Сохраняем токен в сигнал
+          this.currentUser.set(response.user); // Устанавливаем текущего пользователя
+          localStorage.setItem('jwtToken', response.token); // Сохраняем токен в localStorage
+          localStorage.setItem('userName', response.user.name); // Сохраняем имя пользователя в localStorage
+          this.setAuthentication(true); // Устанавливаем состояние аутентификации
+        }
+      ),
       catchError(err => {
         console.error('Error during registration:', err);
         return throwError(() => err);
@@ -64,6 +87,7 @@ export class ApiService {
     this.token.set(null); // Сбрасываем токен
     this.currentUser.set(null); // Сбрасываем текущего пользователя
     localStorage.removeItem('jwtToken'); // Удаляем токен из localStorage
+    this.setAuthentication(false); // Сбрасываем состояние аутентификации
   }
 
   getUsers(): void {
@@ -145,5 +169,19 @@ export class ApiService {
         })
       )
       .subscribe();
+  }
+
+  getBooks(filters: { author?: string; isFavorite?: boolean }, sortBy?: string): Observable<Book[]> {
+    let params: any = {};
+    if (filters.author) params['author_like'] = filters.author;
+    if (filters.isFavorite !== undefined) params['isFavorite'] = filters.isFavorite.toString();
+    if (sortBy) params['_sort'] = sortBy;
+
+    return this.http.get<Book[]>(`${this.baseUrl}/books`, { params }).pipe(
+      catchError(err => {
+        console.error('Error fetching books:', err);
+        return throwError(() => err);
+      })
+    );
   }
 }

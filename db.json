@@ -22,15 +22,27 @@
   "books": [
     {
       "id": "1",
-      "title": "Sample info",
-      "description": "Книга не о чем",
-      "img": ""
+      "title": "Sample Book 1",
+      "description": "Описание книги 1",
+      "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
+      "author": "Author One",
+      "publicationDate": "2023-01-01"
     },
     {
       "id": "2",
-      "title": "Sample info2",
-      "description": "Книга не о чем ч2",
-      "img": ""
+      "title": "Sample Book 2",
+      "description": "Описание книги 2",
+      "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
+      "author": "Author Two",
+      "publicationDate": "2022-12-01"
+    },
+    {
+      "id": "3",
+      "title": "Sample Book 3",
+      "description": "Описание книги 3 ",
+      "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
+      "author": "Author Two",
+      "publicationDate": "2022-12-01"
     }
   ],
   "favorite_books": [
