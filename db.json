@@ -43,6 +43,14 @@
       "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
       "author": "Author Two",
       "publicationDate": "2022-12-01"
+    },
+    {
+      "id": "4",
+      "title": "Sample Book 4",
+      "description": "Описание книги 4 ",
+      "img": "https://media.tenor.com/o4qOyy5R8ScAAAAd/meme.gif",
+      "author": "Author Three",
+      "publicationDate": "2022-12-01"
     }
   ],
   "favorite_books": [

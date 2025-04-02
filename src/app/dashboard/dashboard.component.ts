@@ -36,8 +36,9 @@ export class DashboardComponent {
   isAuthenticated = signal(false);
   books = signal<Book[]>([]); // Сигнал для хранения списка книг
   cards = signal<CardContent[]>([]);
+  
   // private breakpointObserver = inject(BreakpointObserver);
-  images = ['nature', 'sky', 'grass', 'dfs'];
+
   /** Based on the screen size, switch from standard to one column per row */
   // cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
   //   map(({ matches }) => {
@@ -64,19 +65,6 @@ export class DashboardComponent {
     });
 
     this.loadBooks(); // Загружаем книги при инициализации
-
-    const cards: CardContent[] = [];
-
-    for (let i = 0; i < this.images.length; i++) {
-      cards.push({
-        title: `Card ${i + 1}`,
-        description: `Однажды Эрнест Хемингуэй поспорил, что сможет написать самый короткий рассказ...
-         прод упал `,
-        imageUrl: `https://material.angular.io/assets/img/examples/shiba2.jpg`,
-      });
-    }
-
-    this.cards.set(cards);
   }
 
   loadBooks() {
