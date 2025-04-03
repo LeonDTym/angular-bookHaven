@@ -1,7 +1,28 @@
 <h1 class="mat-h1">Dashboard</h1>
+<div class="filter-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Фильтр по автору</mat-label>
+    <mat-select [(ngModel)]="selectedAuthor" (selectionChange)="applyFilters()">
+      <mat-option value="">Все</mat-option>
+      <mat-option *ngFor="let author of authors" [value]="author">{{ author }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="showFavorites" (change)="applyFilters()">Только избранное</mat-checkbox>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Сортировка</mat-label>
+    <mat-select [(ngModel)]="sortBy" (selectionChange)="applyFilters()">
+      <mat-option value="">Без сортировки</mat-option>
+      <mat-option value="title">По имени</mat-option>
+      <mat-option value="publicationDate">По дате публикации</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <div class="container">
   <div class="responsive-grid">
-    <mat-card *ngFor="let book of books()" appearance="outlined">
+    <mat-card *ngFor="let book of filteredBooks()" appearance="outlined">
       <img mat-card-image alt="img" [src]="book.img" />
       <mat-card-header>
         <mat-card-title>{{ book.title }}</mat-card-title>
@@ -12,8 +33,10 @@
         <p>Дата публикации: {{ book.publicationDate }}</p>
       </mat-card-content>
       <mat-card-actions *ngIf="isAuthenticated()">
-        <button mat-button  *ngIf="isBookFavorite(book.id)" (click)="removeFromFavorites(book.id)">LIKE <mat-icon style="color: brown">favorite</mat-icon></button>
-        <button mat-button  *ngIf="!isBookFavorite(book.id)" (click)="addToFavorites(book.id)">LIKE <mat-icon>favorite</mat-icon></button>
+        <button mat-button *ngIf="isBookFavorite(book.id)" (click)="removeFromFavorites(book.id)">
+          LIKE <mat-icon style="color: brown">favorite</mat-icon>
+        </button>
+        <button mat-button *ngIf="!isBookFavorite(book.id)" (click)="addToFavorites(book.id)">LIKE <mat-icon>favorite</mat-icon></button>
         <button mat-icon-button><mat-icon>edit_square</mat-icon></button>
       </mat-card-actions>
     </mat-card>
