@@ -1,43 +1,15 @@
-// .grid-container {
-//   margin: 20px;
-// }
-
-// .dashboard-card {
-//   top: 15px;
-//   left: 15px;
-//   right: 15px;
-//   bottom: 15px;
-// }
-
-// .more-button {
-//   position: absolute;
-//   top: 5px;
-//   right: 10px;
-// }
-// .mat-mdc-card-image{
-//   max-height: 300px;
-//   border-radius: 5%;
-// }
-// .mat-grid-tile-content{
-//   width: fit-content;
-//   height: 320px;
-// }
-// .dashboard-card-content {
-//   text-align: center;
-// }
-
 .container {
   padding: 24px;
-  display: flex; /* Используем Flexbox для центрирования */
-  justify-content: center; /* Центрируем содержимое по горизонтали */
+  display: flex;
+  justify-content: center; 
 }
 
 .responsive-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Устанавливаем 3 колонки фиксированной ширины */
-  gap: 30px; /* Отступы между карточками */
-  width: 100%; /* Занимаем всю ширину контейнера */
-  max-width: 1900px; /* Максимальная ширина для контейнера */
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  width: 100%; 
+  max-width: 1900px; 
 }
 
 img {

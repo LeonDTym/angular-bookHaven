@@ -6,6 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
 import { Book } from './book.model';
 import { FavoriteBook } from './favorite-book.model';
+import { jwtDecode } from 'jwt-decode'; // Убедитесь, что библиотека jwt-decode установлена
 
 // Определяем тип для возвращаемого объекта пользователя без пароля
 type PublicUser = Omit<User, 'password'>;
@@ -19,7 +20,6 @@ export interface AuthResponse {
   providedIn: 'root',
 })
 export class ApiService {
- 
   private baseUrl = 'http://localhost:3000';
 
   // Сигналы для хранения токена, текущего пользователя и пользователей
@@ -28,11 +28,27 @@ export class ApiService {
   users = signal<User[]>([]);
   private authenticated = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const token = this.getToken();
+    if (token && this.isTokenValid(token)) {
+      this.setAuthentication(true); // Устанавливаем состояние аутентификации, если токен существует и актуален
+      this.fetchCurrentUser(); // Загружаем текущего пользователя
+    }
+  }
+
+  // Метод для проверки актуальности токена
+  private isTokenValid(token: string): boolean {
+    try {
+      const decoded: { exp: number } = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decoded.exp > currentTime; // Проверяем, не истёк ли срок действия токена
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false;
+    }
+  }
 
   isAuthenticated(): Observable<boolean> {
-    //становиться false хотя токен все ещё есть
-    //происходит после перезагрузки страницы
     return this.authenticated.asObservable();
   }
 
@@ -172,7 +188,7 @@ export class ApiService {
       .set('author_like', filters.author || '')
       .set('isFavorite', filters.isFavorite !== undefined ? filters.isFavorite.toString() : '')
       .set('_sort', sortBy || '');
-  
+
     return this.http.get<Book[]>(`${this.baseUrl}/books`, { params }).pipe(
       catchError(err => {
         console.error('Error fetching books:', err);
@@ -195,9 +211,9 @@ export class ApiService {
       userId: userId,
       bookId: bookId,
     };
-  
+
     console.log('Adding favorite book:', favoriteBook); // Логируем объект
-  
+
     return this.http.post<FavoriteBook>(`${this.baseUrl}/favorite_books`, favoriteBook).pipe(
       tap(response => {
         console.log('Response from server:', response); // Логируем ответ от сервера
@@ -212,7 +228,7 @@ export class ApiService {
   removeFavoriteBook(userId: number, bookId: string): Observable<void> {
     // Формируем URL с параметрами userId и bookId
     const url = `${this.baseUrl}/favorite_books?userId=${userId}&bookId=${bookId}`;
-  
+
     return this.http.delete<void>(url).pipe(
       catchError(err => {
         console.error('Error removing favorite book:', err);
@@ -220,7 +236,4 @@ export class ApiService {
       })
     );
   }
-  
-  
-
 }
