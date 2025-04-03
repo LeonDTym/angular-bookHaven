@@ -1,9 +1,11 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
+import { Book } from './book.model';
+import { FavoriteBook } from './favorite-book.model';
 
 // Определяем тип для возвращаемого объекта пользователя без пароля
 type PublicUser = Omit<User, 'password'>;
@@ -13,19 +15,11 @@ export interface AuthResponse {
   user: PublicUser; // Используем PublicUser вместо User
 }
 
-export interface Book {
-  id: string;
-  title: string;
-  description: string;
-  img: string;
-  author: string;
-  publicationDate: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
+ 
   private baseUrl = 'http://localhost:3000';
 
   // Сигналы для хранения токена, текущего пользователя и пользователей
@@ -37,6 +31,8 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   isAuthenticated(): Observable<boolean> {
+    //становиться false хотя токен все ещё есть
+    //происходит после перезагрузки страницы
     return this.authenticated.asObservable();
   }
 
@@ -172,11 +168,11 @@ export class ApiService {
   }
 
   getBooks(filters: { author?: string; isFavorite?: boolean }, sortBy?: string): Observable<Book[]> {
-    let params: any = {};
-    if (filters.author) params['author_like'] = filters.author;
-    if (filters.isFavorite !== undefined) params['isFavorite'] = filters.isFavorite.toString();
-    if (sortBy) params['_sort'] = sortBy;
-
+    const params = new HttpParams()
+      .set('author_like', filters.author || '')
+      .set('isFavorite', filters.isFavorite !== undefined ? filters.isFavorite.toString() : '')
+      .set('_sort', sortBy || '');
+  
     return this.http.get<Book[]>(`${this.baseUrl}/books`, { params }).pipe(
       catchError(err => {
         console.error('Error fetching books:', err);
@@ -184,4 +180,47 @@ export class ApiService {
       })
     );
   }
+  getFavoriteBooks(userId: number): Observable<FavoriteBook[]> {
+    return this.http.get<FavoriteBook[]>(`${this.baseUrl}/favorite_books?userId=${userId}`).pipe(
+      catchError(err => {
+        console.error('Error fetching favorite books:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  addFavoriteBook(userId: number, bookId: string): Observable<FavoriteBook> {
+    const favoriteBook: FavoriteBook = {
+      id: Date.now().toString(),
+      userId: userId,
+      bookId: bookId,
+    };
+  
+    console.log('Adding favorite book:', favoriteBook); // Логируем объект
+  
+    return this.http.post<FavoriteBook>(`${this.baseUrl}/favorite_books`, favoriteBook).pipe(
+      tap(response => {
+        console.log('Response from server:', response); // Логируем ответ от сервера
+      }),
+      catchError(err => {
+        console.error('Error adding favorite book:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  removeFavoriteBook(userId: number, bookId: string): Observable<void> {
+    // Формируем URL с параметрами userId и bookId
+    const url = `${this.baseUrl}/favorite_books?userId=${userId}&bookId=${bookId}`;
+  
+    return this.http.delete<void>(url).pipe(
+      catchError(err => {
+        console.error('Error removing favorite book:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+  
+  
+
 }

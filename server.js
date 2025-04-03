@@ -5,7 +5,7 @@ const server = jsonServer.create();
 const router = jsonServer.router('D:\\!Project\\GItHub\\angular-bookHaven\\db.json');
 // const router = jsonServer.router('D:\\Программы\\VsCode\\angular-bookHaven\\db.json');
 const middlewares = jsonServer.defaults();
-const SECRET_KEY = 'my-secret-key'; 
+const SECRET_KEY = 'my-secret-key';
 const PORT = 3000;
 
 server.use(middlewares);
@@ -42,9 +42,38 @@ server.post('/auth/register', (req, res) => {
   res.status(201).json({ message: 'User registered successfully', user: newUser });
 });
 
+//Добавление любимых книг
+server.post('/favorite_books', (req, res) => {
+  const newFavoriteBook = req.body;
+  const favorite_books = router.db.get('favorite_books');
+
+  favorite_books.push(newFavoriteBook).write();
+  res.status(201).json({ message: 'Book added in favorite successfully', book: newFavoriteBook });
+});
+
+// Удаление книги из избранного
+server.delete('/favorite_books', (req, res) => {
+  const userId = parseInt(req.query.userId, 10);
+  const bookId = req.query.bookId;
+
+  // Находим запись, которую нужно удалить
+  const favoriteBook = router.db.get('favorite_books')
+    .find({ userId: userId, bookId: bookId })
+    .value();
+
+  if (favoriteBook) {
+    // Удаляем запись
+    router.db.get('favorite_books').remove(favoriteBook).write();
+    res.status(200).json({ message: 'Book removed from favorites successfully' });
+  } else {
+    res.status(404).json({ message: 'Favorite book not found' });
+  }
+});
+
+
 // Middleware для проверки токена
 const authenticateToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; 
+  const token = req.headers['authorization']?.split(' ')[1];
 
   if (!token) return res.status(401).json({ message: 'Access token is missing' });
 

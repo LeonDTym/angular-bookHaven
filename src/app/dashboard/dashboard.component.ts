@@ -8,13 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { ApiService, Book } from '../../service/api.service';
+import { ApiService } from '../../service/api.service';
+import { Book } from '../../service/book.model';
+import { FavoriteBook } from '../../service/favorite-book.model';
 
-interface CardContent {
-  title: string;
-  description: string;
-  imageUrl: string;
-}
 
 @Component({
   selector: 'app-dashboard',
@@ -35,42 +32,69 @@ export class DashboardComponent {
   private readonly document = inject(DOCUMENT);
   isAuthenticated = signal(false);
   books = signal<Book[]>([]); // Сигнал для хранения списка книг
-  cards = signal<CardContent[]>([]);
-  
-  // private breakpointObserver = inject(BreakpointObserver);
-
-  /** Based on the screen size, switch from standard to one column per row */
-  // cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-  //   map(({ matches }) => {
-  //     if (matches) {
-  //       return [
-  //         { title: 'Card 1', cols: 1, rows: 1 },
-  //         { title: 'Card 2', cols: 1, rows: 1 },
-  //         { title: 'Card 3', cols: 1, rows: 1 },
-  //       ];
-  //     }
-
-  //     return [
-  //       { title: 'Card 1', cols: 1, rows: 1 },
-  //       { title: 'Card 2', cols: 1, rows: 1 },
-  //       { title: 'Card 3', cols: 1, rows: 1 },
-  //     ];
-  //   })
-  // );
+  favoriteBooks = signal<string[]>([]);
 
   constructor(private apiService: ApiService) {
     effect(() => {
       const currentUser = this.apiService.currentUser();
       this.isAuthenticated.set(!!currentUser);
+      if (currentUser) {
+        this.loadFavoriteBooks(currentUser.id); // Загружаем любимые книги при авторизации
+      }
     });
 
     this.loadBooks(); // Загружаем книги при инициализации
   }
 
+  isBookFavorite(bookId: string): boolean {
+    return this.favoriteBooks().includes(bookId);
+  }
+
   loadBooks() {
-    this.apiService.getBooks({}, '').subscribe({
+    this.apiService.getBooks({author:''}, '').subscribe({
       next: books => this.books.set(books),
       error: err => console.error('Error fetching books:', err),
     });
   }
+
+  loadFavoriteBooks(userId: number) {
+    this.apiService.getFavoriteBooks(userId).subscribe({
+      next:  (favoriteBooks: FavoriteBook[]) => {
+        // Извлекаем только ID любимых книг
+        const favoriteBookIds = favoriteBooks.map(fb => fb.bookId);
+        this.favoriteBooks.set(favoriteBookIds);
+      },
+      error: err => console.error('Error fetching favorite books:', err),
+    });
+  }
+
+  addToFavorites(bookId: string) {
+    const currentUser = this.apiService.currentUser();
+    if (currentUser) {
+      this.apiService.addFavoriteBook(currentUser.id, bookId).subscribe({
+        next: () => {
+          // Обновляем список любимых книг
+          this.loadFavoriteBooks(currentUser.id);
+        },
+        error: err => console.error('Error adding to favorites:', err),
+      });
+    }
+  }
+removeFromFavorites(bookId: string) {
+  const currentUser = this.apiService.currentUser();
+  if (currentUser) {
+    // Check if the bookId is in the favoriteBooks array
+    if (this.favoriteBooks().includes(bookId)) {
+      this.apiService.removeFavoriteBook(currentUser.id, bookId).subscribe({
+        next: () => {
+          // Обновляем список любимых книг
+          this.loadFavoriteBooks(currentUser.id);
+        },
+        error: err => console.error('Error removing from favorites:', err),
+      });
+    }
+  }
+}
+
+  
 }

@@ -17,6 +17,18 @@
       "email": "user3@ex.com",
       "password": "password3",
       "name": "вапвапвап"
+    },
+    {
+      "id": 1743678651689,
+      "email": "1@d.com",
+      "password": "123456",
+      "name": " шлеб"
+    },
+    {
+      "id": 1743678686432,
+      "email": "34@fs.com",
+      "password": "123456",
+      "name": "rthfrth"
     }
   ],
   "books": [
@@ -40,7 +52,7 @@
       "id": "3",
       "title": "Sample Book 3",
       "description": "Описание книги 3 ",
-      "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
+      "img": "https://i.ytimg.com/vi/sCEdIVYFIWU/maxresdefault.jpg",
       "author": "Author Two",
       "publicationDate": "2022-12-01"
     },
@@ -55,14 +67,24 @@
   ],
   "favorite_books": [
     {
-      "id": "1",
-      "userId": 1,
-      "bookId": "1"
+      "id": "3",
+      "userId": 2,
+      "bookId": "2"
     },
     {
-      "id": "2",
+      "id": "1743689160148",
       "userId": 1,
       "bookId": "2"
+    },
+    {
+      "id": "1743689629677",
+      "userId": 1,
+      "bookId": "3"
+    },
+    {
+      "id": "1743690378286",
+      "userId": 1,
+      "bookId": "4"
     }
   ]
 }
