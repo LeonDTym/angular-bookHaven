@@ -6,23 +6,27 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+
 
 
 @Component({
-  selector: 'app-address-form',
-  templateUrl: './address-form.component.html',
-  styleUrl: './address-form.component.scss',
+  selector: 'app-add-book',
+  templateUrl: './add-book.component.html',
+  styleUrl: './add-book.component.scss',
   standalone: true,
+  providers: [provideNativeDateAdapter()],
   imports: [
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule, MatDatepickerModule
   ]
 })
-export class AddressFormComponent {
+export class AddBookComponent {
   private fb = inject(FormBuilder);
   addressForm = this.fb.group({
     company: null,

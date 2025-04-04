@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AddressFormComponent } from './address-form/address-form.component';
+import { AddBookComponent } from './add-book/add-book.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TableComponent } from './table/table.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
@@ -12,8 +12,8 @@ export const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'address',
-    component: AddressFormComponent,
+    path: 'addbook',
+    component: AddBookComponent,
     canActivate: [AuthGuard], // Защищенный маршрут
   },
   {
