@@ -212,11 +212,11 @@ export class ApiService {
       bookId: bookId,
     };
 
-    console.log('Adding favorite book:', favoriteBook); // Логируем объект
+    console.log('Adding favorite book:', favoriteBook); 
 
     return this.http.post<FavoriteBook>(`${this.baseUrl}/favorite_books`, favoriteBook).pipe(
       tap(response => {
-        console.log('Response from server:', response); // Логируем ответ от сервера
+        console.log('Ответ от сервера:', response);
       }),
       catchError(err => {
         console.error('Error adding favorite book:', err);
@@ -226,12 +226,28 @@ export class ApiService {
   }
 
   removeFavoriteBook(userId: number, bookId: string): Observable<void> {
-    // Формируем URL с параметрами userId и bookId
     const url = `${this.baseUrl}/favorite_books?userId=${userId}&bookId=${bookId}`;
 
     return this.http.delete<void>(url).pipe(
       catchError(err => {
         console.error('Error removing favorite book:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  addBook(book: Partial<Book>): Observable<Book> {
+    return this.http.post<Book>(`${this.baseUrl}/books`, book).pipe(
+      catchError(err => {
+        return throwError(() => err);
+      })
+    );
+  }
+
+  deleteBook(bookId: string): Observable<void> {
+    const url = `${this.baseUrl}/books/${bookId}`;
+    return this.http.delete<void>(url).pipe(
+      catchError(err => {
         return throwError(() => err);
       })
     );

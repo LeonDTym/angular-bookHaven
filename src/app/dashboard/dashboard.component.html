@@ -8,8 +8,6 @@
     </mat-select>
   </mat-form-field>
 
- 
-
   <mat-form-field appearance="fill">
     <mat-label>Сортировка</mat-label>
     <mat-select [(ngModel)]="sortBy" (selectionChange)="applyFilters()">
@@ -28,10 +26,11 @@
       <img mat-card-image alt="img" [src]="book.img" />
       <mat-card-header>
         <mat-card-title>{{ book.title }}</mat-card-title>
-        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ book.author }} {{ book.genre }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ book.description }}</p>
+
         <p>Дата публикации: {{ book.publicationDate }}</p>
       </mat-card-content>
       <mat-card-actions *ngIf="isAuthenticated()">
@@ -40,6 +39,9 @@
         </button>
         <button mat-button *ngIf="!isBookFavorite(book.id)" (click)="addToFavorites(book.id)">LIKE <mat-icon>favorite</mat-icon></button>
         <button mat-icon-button><mat-icon>edit_square</mat-icon></button>
+        <button mat-icon-button (click)="deleteBook(book.id)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>

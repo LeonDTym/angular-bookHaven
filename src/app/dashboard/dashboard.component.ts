@@ -36,9 +36,11 @@ export class DashboardComponent {
   books = signal<Book[]>([]); // Сигнал для хранения списка книг
   favoriteBooks = signal<string[]>([]);
   selectedAuthor = '';
+  selectedGenre = ''; // Новое поле для выбранного жанра
   showFavorites = false;
   sortBy = '';
   authors: string[] = [];
+  genres: string[] = []; // Список доступных жанров
   filteredBooks = signal<Book[]>([]);
 
   constructor(private apiService: ApiService) {
@@ -55,6 +57,7 @@ export class DashboardComponent {
     effect(() => {
       this.filteredBooks.set(this.books());
       this.authors = [...new Set(this.books().map(book => book.author))];
+      this.genres = [...new Set(this.books().flatMap(book => book.genre))]; // Извлекаем уникальные жанры из массивов
     });
   }
 
@@ -92,6 +95,7 @@ export class DashboardComponent {
       });
     }
   }
+
   removeFromFavorites(bookId: string) {
     const currentUser = this.apiService.currentUser();
     if (currentUser) {
@@ -100,11 +104,25 @@ export class DashboardComponent {
         this.apiService.removeFavoriteBook(currentUser.id, bookId).subscribe({
           next: () => {
             // Обновляем список любимых книг
-            this.loadFavoriteBooks(currentUser.id);
+            const updatedFavorites = this.favoriteBooks().filter(id => id !== bookId);
+            this.favoriteBooks.set(updatedFavorites); // Обновляем сигнал
+            this.applyFilters(); // Применяем фильтры сразу после обновления
           },
-          error: err => console.error('Error removing from favorites:', err),
+          error: (err: any) => console.error('Error removing from favorites:', err),
         });
       }
+    }
+  }
+
+  deleteBook(bookId: string) {
+    if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
+      this.apiService.deleteBook(bookId).subscribe({
+        next: () => {
+          // Удаляем книгу из списка
+          this.books.set(this.books().filter(book => book.id !== bookId));
+        },
+        error: (err: any) => console.error('Error deleting book:', err),
+      });
     }
   }
 
@@ -113,6 +131,11 @@ export class DashboardComponent {
 
     if (this.selectedAuthor) {
       books = books.filter(book => book.author === this.selectedAuthor);
+    }
+
+    if (this.selectedGenre) {
+      // Фильтрация по жанру
+      books = books.filter(book => book.genre.includes(this.selectedGenre)); // Проверяем, что жанр входит в массив
     }
 
     if (this.showFavorites) {
