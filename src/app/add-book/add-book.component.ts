@@ -31,7 +31,7 @@ export class AddBookComponent {
   private fb = inject(FormBuilder);
   private apiService = inject(ApiService);
 
-  genres = ['Fiction', 'Non-Fiction', 'Science', 'Fantasy', 'Drama', 'Horror', 'Mystery', 'Adventure']; // Список жанров
+  genres = ["Художественная литература", "Научно-популярная литература", "Наука", "Фэнтези", "Драма", "Ужасы", "Мистика", "Приключения"]; // Список жанров
 
   bookForm = this.fb.group({
     title: ['', Validators.required],

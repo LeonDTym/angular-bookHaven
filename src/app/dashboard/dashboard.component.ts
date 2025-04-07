@@ -7,11 +7,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatChipsModule} from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { Book } from '../../service/book.model';
 import { FavoriteBook } from '../../service/favorite-book.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,18 +31,20 @@ import { FavoriteBook } from '../../service/favorite-book.model';
     MatFormFieldModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatChipsModule,
+    RouterModule
   ],
 })
 export class DashboardComponent {
   isAuthenticated = signal(false);
-  books = signal<Book[]>([]); // Сигнал для хранения списка книг
+  books = signal<Book[]>([]);
   favoriteBooks = signal<string[]>([]);
   selectedAuthor = '';
-  selectedGenre = ''; // Новое поле для выбранного жанра
+  selectedGenre = '';
   showFavorites = false;
   sortBy = '';
   authors: string[] = [];
-  genres: string[] = []; // Список доступных жанров
+  genres: string[] = [];
   filteredBooks = signal<Book[]>([]);
 
   constructor(private apiService: ApiService) {
@@ -48,16 +52,16 @@ export class DashboardComponent {
       const currentUser = this.apiService.currentUser();
       this.isAuthenticated.set(!!currentUser);
       if (currentUser) {
-        this.loadFavoriteBooks(currentUser.id); // Загружаем любимые книги при авторизации
+        this.loadFavoriteBooks(currentUser.id);
       }
     });
 
-    this.loadBooks(); // Загружаем книги при инициализации
+    this.loadBooks();
 
     effect(() => {
       this.filteredBooks.set(this.books());
       this.authors = [...new Set(this.books().map(book => book.author))];
-      this.genres = [...new Set(this.books().flatMap(book => book.genre))]; // Извлекаем уникальные жанры из массивов
+      this.genres = [...new Set(this.books().flatMap(book => book.genre))]; // уникальные жанры из массивов
     });
   }
 
@@ -75,7 +79,6 @@ export class DashboardComponent {
   loadFavoriteBooks(userId: number) {
     this.apiService.getFavoriteBooks(userId).subscribe({
       next: (favoriteBooks: FavoriteBook[]) => {
-        // Извлекаем только ID любимых книг
         const favoriteBookIds = favoriteBooks.map(fb => fb.bookId);
         this.favoriteBooks.set(favoriteBookIds);
       },
@@ -88,7 +91,6 @@ export class DashboardComponent {
     if (currentUser) {
       this.apiService.addFavoriteBook(currentUser.id, bookId).subscribe({
         next: () => {
-          // Обновляем список любимых книг
           this.loadFavoriteBooks(currentUser.id);
         },
         error: err => console.error('Error adding to favorites:', err),
@@ -99,16 +101,14 @@ export class DashboardComponent {
   removeFromFavorites(bookId: string) {
     const currentUser = this.apiService.currentUser();
     if (currentUser) {
-      // Check if the bookId is in the favoriteBooks array
       if (this.favoriteBooks().includes(bookId)) {
         this.apiService.removeFavoriteBook(currentUser.id, bookId).subscribe({
           next: () => {
-            // Обновляем список любимых книг
             const updatedFavorites = this.favoriteBooks().filter(id => id !== bookId);
-            this.favoriteBooks.set(updatedFavorites); // Обновляем сигнал
-            this.applyFilters(); // Применяем фильтры сразу после обновления
+            this.favoriteBooks.set(updatedFavorites);
+            this.applyFilters();
           },
-          error: (err: any) => console.error('Error removing from favorites:', err),
+          error: (err: unknown) => console.error('Error removing from favorites:', err),
         });
       }
     }
@@ -118,10 +118,9 @@ export class DashboardComponent {
     if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
       this.apiService.deleteBook(bookId).subscribe({
         next: () => {
-          // Удаляем книгу из списка
           this.books.set(this.books().filter(book => book.id !== bookId));
         },
-        error: (err: any) => console.error('Error deleting book:', err),
+        error: (err: unknown) => console.error('Error deleting book:', err),
       });
     }
   }
@@ -135,7 +134,7 @@ export class DashboardComponent {
 
     if (this.selectedGenre) {
       // Фильтрация по жанру
-      books = books.filter(book => book.genre.includes(this.selectedGenre)); // Проверяем, что жанр входит в массив
+      books = books.filter(book => book.genre.includes(this.selectedGenre));
     }
 
     if (this.showFavorites) {

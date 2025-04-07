@@ -96,10 +96,10 @@ export class ApiService {
   }
 
   logout(): void {
-    this.token.set(null); // Сбрасываем токен
-    this.currentUser.set(null); // Сбрасываем текущего пользователя
-    localStorage.removeItem('jwtToken'); // Удаляем токен из localStorage
-    this.setAuthentication(false); // Сбрасываем состояние аутентификации
+    this.token.set(null); 
+    this.currentUser.set(null);
+    localStorage.removeItem('jwtToken'); // минус токен из localStorage
+    this.setAuthentication(false); // минус состояние аутентификации
   }
 
   getUsers(): void {
@@ -115,14 +115,6 @@ export class ApiService {
       .subscribe();
   }
 
-  fetchAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users`).pipe(
-      catchError(err => {
-        console.error('Error fetching users:', err);
-        return throwError(() => err);
-      })
-    );
-  }
 
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/users/${id}`).pipe(

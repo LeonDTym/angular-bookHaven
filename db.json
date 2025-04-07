@@ -38,8 +38,10 @@
       "description": "Описание книги 1",
       "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
       "author": "Author One",
-      "publicationDate": "2023-01-01",
-      "genre": "Fiction"
+      "publicationDate": "01.01.2023",
+      "genre": [
+        "Художественная литература"
+      ]
     },
     {
       "id": "2",
@@ -47,8 +49,10 @@
       "description": "Описание книги 2",
       "img": "https://material.angular.io/assets/img/examples/shiba2.jpg",
       "author": "Author Two",
-      "publicationDate": "2022-12-01",
-      "genre": "Non-Fiction"
+      "publicationDate": "01.12.2022",
+      "genre": [
+        "Научно-популярная литература"
+      ]
     },
     {
       "id": "3",
@@ -56,8 +60,10 @@
       "description": "Описание книги 3 ",
       "img": "https://i.ytimg.com/vi/sCEdIVYFIWU/maxresdefault.jpg",
       "author": "Author Two",
-      "publicationDate": "2022-12-01",
-      "genre": "Science"
+      "publicationDate": "03.12.2023",
+      "genre": [
+        "Наука"
+      ]
     },
     {
       "id": "4",
@@ -65,8 +71,10 @@
       "description": "Описание книги 4 ",
       "img": "https://media.tenor.com/o4qOyy5R8ScAAAAd/meme.gif",
       "author": "Author Three",
-      "publicationDate": "2022-12-01",
-      "genre": "Fantasy"
+      "publicationDate": "04.12.2023",
+      "genre": [
+        "Фэнтези"
+      ]
     },
     {
       "id": "1743875464955",
@@ -75,7 +83,9 @@
       "author": "ozon671games3",
       "publicationDate": "10.02.2023",
       "img": "https://i.ytimg.com/vi/LsIP4PQ4OqM/maxresdefault.jpg",
-      "genre": "Drama"
+      "genre": [
+        "Драма"
+      ]
     },
     {
       "id": "1743875923563",
@@ -84,7 +94,45 @@
       "author": "ozon671games3",
       "publicationDate": "02.02.2025",
       "img": "https://c.tenor.com/KSSpEoXEzNAAAAAd/ozon671games-ozon.gif",
-      "genre": "Horror"
+      "genre": [
+        "Horror"
+      ]
+    },
+    {
+      "id": "1744014882681",
+      "title": "Numero quatro",
+      "description": "cat 4",
+      "author": "world",
+      "publicationDate": "05.01.1728",
+      "img": "https://media.tenor.com/IM836m7kzcQAAAAi/spinning-cat.gif",
+      "genre": [
+        "Художественная литература",
+        "Фэнтези"
+      ]
+    },
+    {
+      "id": "1744016408507",
+      "title": "gdfgd",
+      "description": "dfgdfg",
+      "author": "dfgdfg",
+      "publicationDate": "22.04.2025",
+      "img": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2Fa2%2F67%2F0d%2Fa2670de6a3a0289623d3aed3dbc3d68f.jpg&f=1&ipt=c65a587f8ce72107cd5a7a0259360d88d5ba1bbeea81f3af4c10d701db2a8496",
+      "genre": [
+        "Наука"
+      ]
+    },
+    {
+      "id": "1744030196864",
+      "title": "Help",
+      "description": "Im in prison",
+      "author": "Me",
+      "publicationDate": "07.04.2025",
+      "img": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Ff7%2F19%2F37%2Ff719375209351836ba4afce305ea72c6.jpg&f=1&nofb=1&ipt=8b9cd9a49ae87f0ece0a508820d7ab141e2acaf0e5b44bbe3e66dac74d74acd4",
+      "genre": [
+        "Наука",
+        "Фэнтези",
+        "Ужасы"
+      ]
     }
   ],
   "favorite_books": [

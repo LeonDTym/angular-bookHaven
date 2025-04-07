@@ -6,12 +6,15 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from '../service/auth.interceptor';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { httpErrorInterceptor } from '../service/http-error.interceptor';
+
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes),
       provideAnimationsAsync(),
-       provideHttpClient(withInterceptors([authInterceptor])),
+       provideHttpClient(withInterceptors([authInterceptor,httpErrorInterceptor])),
        {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'}
       ]
 };
