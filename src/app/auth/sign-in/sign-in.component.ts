@@ -5,7 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { ApiService, AuthResponse } from '../../../service/api.service';
+import { ApiService } from '../../../service/api.service';
+import { AuthService, AuthResponse } from '../../../service/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,6 +22,7 @@ export class SignInComponent {
   constructor(
     private fb: FormBuilder,
     private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.authForm = this.fb.group({
@@ -37,7 +39,7 @@ export class SignInComponent {
   onSubmit() {
     if (this.authForm.valid) {
       const { email, password } = this.authForm.value;
-      this.apiService.login(email, password).subscribe({
+      this.authService.login(email, password).subscribe({
         next: (response: AuthResponse) => {
           console.log('JWT Token:', response.token);
           this.router.navigate(['/']);

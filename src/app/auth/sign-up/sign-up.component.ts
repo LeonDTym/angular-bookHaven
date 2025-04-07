@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ApiService, AuthResponse } from '../../../service/api.service';
+import { AuthService, AuthResponse } from '../../../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -15,13 +15,12 @@ import { Router } from '@angular/router';
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent implements OnInit {
-
   hide = signal(true);
   signUpForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.signUpForm = this.fb.group({
@@ -34,27 +33,28 @@ export class SignUpComponent implements OnInit {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
+
   ngOnInit(): void {
-    this.apiService.getUsers(); // Загружаем пользователей
+    this.authService.getUsers(); // Загружаем пользователей
   }
 
   get users() {
-    return this.apiService.users(); // Получаем текущее состояние пользователей
+    return this.authService.users(); // Вызываем сигнал как функцию для получения значения
   }
 
   onSubmit() {
     if (this.signUpForm.valid) {
-          const { email, password, name } = this.signUpForm.value;
-          this.apiService.register(email, password, name).subscribe({
-            next: (response: AuthResponse) => {
-              console.log('JWT Token:', response.token);
-              this.router.navigate(['/']);
-            },
-            error: err => {
-              console.error('Ошибка регистрации:', err.error.message);
-              alert('Ошибка регистрации. Проверьте свои учетные данные. ' + err.error.message);
-            },
-          });
-        }
+      const { email, password, name } = this.signUpForm.value;
+      this.authService.register(email, password, name).subscribe({
+        next: (response: AuthResponse) => {
+          console.log('JWT Token:', response.token);
+          this.router.navigate(['/']);
+        },
+        error: err => {
+          console.error('Ошибка регистрации:', err.error.message);
+          alert('Ошибка регистрации. Проверьте свои учетные данные. ' + err.error.message);
+        },
+      });
+    }
   }
 }

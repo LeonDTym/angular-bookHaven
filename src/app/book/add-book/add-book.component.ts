@@ -8,7 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../service/api.service';
+import { ApiService } from '../../../service/api.service';
 
 @Component({
   selector: 'app-add-book',
@@ -16,14 +16,14 @@ import { ApiService } from '../../service/api.service';
   styleUrl: './add-book.component.scss',
   standalone: true,
   imports: [
-    CommonModule, // Добавляем CommonModule для поддержки *ngFor
+    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule, // Добавляем MatSelectModule
-    MatOptionModule, // Добавляем MatOptionModule
+    MatSelectModule,
+    MatOptionModule,
     ReactiveFormsModule,
   ],
 })
@@ -31,7 +31,7 @@ export class AddBookComponent {
   private fb = inject(FormBuilder);
   private apiService = inject(ApiService);
 
-  genres = ["Художественная литература", "Научно-популярная литература", "Наука", "Фэнтези", "Драма", "Ужасы", "Мистика", "Приключения"]; // Список жанров
+  genres = ['Художественная литература', 'Научно-популярная литература', 'Наука', 'Фэнтези', 'Драма', 'Ужасы', 'Мистика', 'Приключения']; // Список жанров
 
   bookForm = this.fb.group({
     title: ['', Validators.required],
@@ -39,7 +39,7 @@ export class AddBookComponent {
     author: ['', Validators.required],
     publicationDate: ['', Validators.required],
     img: ['', Validators.required],
-    genre: [[], Validators.required], // Поле для выбора нескольких жанров
+    genre: [[], Validators.required],
   });
 
   onSubmit(): void {
@@ -48,12 +48,12 @@ export class AddBookComponent {
         title: this.bookForm.value.title?.trim() || '',
         description: this.bookForm.value.description?.trim() || '',
         author: this.bookForm.value.author?.trim() || '',
-        publicationDate: this.formatDate(this.bookForm.value.publicationDate), // Форматируем дату
+        publicationDate: this.formatDate(this.bookForm.value.publicationDate),
         img: this.bookForm.value.img?.trim() || '',
-        genre: this.bookForm.value.genre || [], // Убедимся, что жанры всегда массив
+        genre: this.bookForm.value.genre || [],
       };
 
-      console.log('Отправка данных на сервер:', bookData); // Логируем данные перед отправкой
+      console.log('Отправка данных на сервер:', bookData);
 
       this.apiService.addBook(bookData).subscribe({
         next: () => {
@@ -74,7 +74,7 @@ export class AddBookComponent {
     if (!date) return '';
     const parsedDate = new Date(date);
     const day = String(parsedDate.getDate()).padStart(2, '0');
-    const month = String(parsedDate.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
     const year = parsedDate.getFullYear();
     return `${day}.${month}.${year}`;
   }

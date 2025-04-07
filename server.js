@@ -2,8 +2,8 @@ const jsonServer = require('json-server');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const server = jsonServer.create();
-const router = jsonServer.router('D:\\!Project\\GItHub\\angular-bookHaven\\db.json');
-//const router = jsonServer.router('D:\\Программы\\VsCode\\angular-bookHaven\\db.json');
+// const router = jsonServer.router('D:\\!Project\\GItHub\\angular-bookHaven\\db.json');
+const router = jsonServer.router('D:\\Программы\\VsCode\\angular-bookHaven\\db.json');
 const middlewares = jsonServer.defaults();
 const SECRET_KEY = 'my-secret-key';
 const PORT = 3000;
@@ -147,6 +147,24 @@ server.post('/books', (req, res) => {
   }
 });
 
+server.put('/books/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const updatedBook = req.body;
+
+  if (!updatedBook || !id) {
+    return res.status(400).json({ message: 'Некорректные данные для обновления книги.' });
+  }
+
+  const books = router.db.get('books');
+  const book = books.find({ id }).value();
+
+  if (book) {
+    books.find({ id }).assign(updatedBook).write();
+    res.status(200).json({ message: 'Книга успешно обновлена.', book: updatedBook });
+  } else {
+    res.status(404).json({ message: 'Книга не найдена.' });
+  }
+});
 // Используйте router после проверки токена
 server.use(router);
 

@@ -11,6 +11,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
+import { AuthService } from '../../service/auth.service';
 import { Book } from '../../service/book.model';
 import { FavoriteBook } from '../../service/favorite-book.model';
 import { RouterModule } from '@angular/router';
@@ -47,9 +48,9 @@ export class DashboardComponent {
   genres: string[] = [];
   filteredBooks = signal<Book[]>([]);
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private authService: AuthService) {
     effect(() => {
-      const currentUser = this.apiService.currentUser();
+      const currentUser = this.authService.currentUser();
       this.isAuthenticated.set(!!currentUser);
       if (currentUser) {
         this.loadFavoriteBooks(currentUser.id);
@@ -87,7 +88,7 @@ export class DashboardComponent {
   }
 
   addToFavorites(bookId: string) {
-    const currentUser = this.apiService.currentUser();
+    const currentUser = this.authService.currentUser();
     if (currentUser) {
       this.apiService.addFavoriteBook(currentUser.id, bookId).subscribe({
         next: () => {
@@ -99,7 +100,7 @@ export class DashboardComponent {
   }
 
   removeFromFavorites(bookId: string) {
-    const currentUser = this.apiService.currentUser();
+    const currentUser = this.authService.currentUser();
     if (currentUser) {
       if (this.favoriteBooks().includes(bookId)) {
         this.apiService.removeFavoriteBook(currentUser.id, bookId).subscribe({

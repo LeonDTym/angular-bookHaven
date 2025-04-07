@@ -1,5 +1,4 @@
 import { DOCUMENT } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { Component, effect, inject, signal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -9,10 +8,15 @@ import { CommonModule } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ApiService } from '../service/api.service';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, MatSlideToggleModule, FormsModule, MatIconModule, CommonModule, MatButton, HttpClientModule, MatMenuModule],
+  imports: [RouterOutlet,
+     RouterModule,
+      MatSlideToggleModule,
+       FormsModule, MatIconModule,
+        CommonModule, MatButton, MatMenuModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -20,31 +24,31 @@ export class AppComponent {
   private readonly document = inject(DOCUMENT);
 
   isDarkTheme = signal(false);
-  isAuthenticated = signal(false); // Сигнал для отслеживания состояния авторизации
-  userName = signal(''); // Сигнал для хранения имени пользователя
-  userEmail = signal(''); // Сигнал для хранения email пользователя
+  isAuthenticated = signal(false);
+  userName = signal('');
+  userEmail = signal(''); 
 
-  constructor(private apiService: ApiService) {
-    // Инжектируем ApiService
+  constructor(private apiService: ApiService, private authService: AuthService) {
+    
     const savedTheme = localStorage.getItem('isDarkTheme');
     if (savedTheme) {
-      this.isDarkTheme.set(JSON.parse(savedTheme)); // Устанавливаем состояние темы
+      this.isDarkTheme.set(JSON.parse(savedTheme)); 
     }
 
-    // Получаем текущего пользователя из базы данных
-    this.apiService.fetchCurrentUser();
 
-    // Подписываемся на изменения текущего пользователя
+    this.authService.fetchCurrentUser();
+
+
     effect(() => {
-      const currentUser = this.apiService.currentUser();
+      const currentUser = this.authService.currentUser();
       if (currentUser) {
         this.isAuthenticated.set(true);
-        this.userName.set(currentUser.name); // Устанавливаем имя пользователя
-        this.userEmail.set(currentUser.email); // Устанавливаем email пользователя
+        this.userName.set(currentUser.name); 
+        this.userEmail.set(currentUser.email);
       } else {
         this.isAuthenticated.set(false);
         this.userName.set('');
-        this.userEmail.set(''); // Сбрасываем email пользователя
+        this.userEmail.set(''); 
       }
     });
 
@@ -60,16 +64,15 @@ export class AppComponent {
   toggleTheme() {
     this.isDarkTheme.update(isDark => {
       const newTheme = !isDark;
-      localStorage.setItem('isDarkTheme', JSON.stringify(newTheme)); // Сохраняем новое состояние в localStorage
+      localStorage.setItem('isDarkTheme', JSON.stringify(newTheme)); 
       return newTheme;
     });
   }
 
   logout() {
     this.isAuthenticated.set(false);
-    this.userName.set(''); // Сбрасываем имя пользователя
-    this.userEmail.set(''); // Сбрасываем email пользователя
-    this.apiService.logout(); // Вызываем метод logout из ApiService
-    // Дополнительно: перенаправление на страницу входа
+    this.userName.set('');
+    this.userEmail.set('');
+    this.authService.logout();
   }
 }

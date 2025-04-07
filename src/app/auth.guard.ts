@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ApiService } from '../service/api.service';
+import { AuthService } from '../service/auth.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,12 +9,12 @@ import { map } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   canActivate(): Observable<boolean> {
-    return this.apiService.isAuthenticated().pipe(
+    return this.authService.isAuthenticated().pipe(
       map(isAuthenticated => {
         if (isAuthenticated) {
           return true; // Разрешить доступ

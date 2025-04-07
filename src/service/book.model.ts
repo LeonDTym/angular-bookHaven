@@ -5,5 +5,5 @@ export interface Book {
   img: string;
   author: string;
   publicationDate: string;
-  genre: string[]; // Поле жанра как массив строк
+  genre: string[];
 }
