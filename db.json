@@ -102,7 +102,7 @@
       "publicationDate": "02.02.2025",
       "img": "https://c.tenor.com/KSSpEoXEzNAAAAAd/ozon671games-ozon.gif",
       "genre": [
-        "Horror"
+        "Художественная литература"
       ]
     },
     {
@@ -146,8 +146,8 @@
       "title": "o",
       "description": "o",
       "author": "o",
-      "publicationDate": "23.04.2025",
-      "img": "o",
+      "publicationDate": "04.08.2025",
+      "img": "https://www.meme-arsenal.com/memes/8ca43e18c0c5c238a3ac9390653f8d30.jpg",
       "genre": [
         "Фэнтези",
         "Драма"
@@ -161,16 +161,6 @@
       "bookId": "2"
     },
     {
-      "id": "1743875995318",
-      "userId": 1,
-      "bookId": "1743875923563"
-    },
-    {
-      "id": "1743876662221",
-      "userId": 1,
-      "bookId": "4"
-    },
-    {
       "id": "1743942629771",
       "userId": 1,
       "bookId": "1743875464955"
@@ -179,6 +169,11 @@
       "id": "1744050564486",
       "userId": 1,
       "bookId": "1744014882681"
+    },
+    {
+      "id": "1744121752560",
+      "userId": 1,
+      "bookId": "3"
     }
   ]
 }
