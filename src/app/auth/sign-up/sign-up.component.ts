@@ -35,11 +35,11 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getUsers(); // Загружаем пользователей
+    this.authService.getUsers(); // пользователи
   }
 
   get users() {
-    return this.authService.users(); // Вызываем сигнал как функцию для получения значения
+    return this.authService.users();
   }
 
   onSubmit() {
