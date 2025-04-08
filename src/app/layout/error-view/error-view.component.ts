@@ -18,6 +18,7 @@ export class ErrorViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.message =
-      (this.location.getState() as { message: string })?.message ?? this.route.snapshot.data['message'] ?? 'Произошла неизвестная ошибка.';
+      this.route.snapshot.data['message'] ?? (this.location.getState() as { message: string })?.message ?? 'Произошла неизвестная ошибка.';
+    console.log('Error message:', this.message); // Логируем сообщение для отладки
   }
 }

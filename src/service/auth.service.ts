@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { User } from './user.model';
+import { User } from './models/user.model';
 import { jwtDecode } from 'jwt-decode';
-import { AuthResponse } from './auth-response.model';
+import { AuthResponse } from './models/auth-response.model';
 
 type PublicUser = Omit<User, 'password'>;
 export type { AuthResponse };
@@ -161,4 +161,3 @@ export class AuthService {
     );
   }
 }
-

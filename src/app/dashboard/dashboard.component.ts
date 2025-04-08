@@ -7,13 +7,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
 import { AuthService } from '../../service/auth.service';
-import { Book } from '../../service/book.model';
-import { FavoriteBook } from '../../service/favorite-book.model';
+import { Book } from '../../service/models/book.model';
+import { FavoriteBook } from '../../service/models/favorite-book.model';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -33,7 +33,7 @@ import { RouterModule } from '@angular/router';
     MatSelectModule,
     MatCheckboxModule,
     MatChipsModule,
-    RouterModule
+    RouterModule,
   ],
 })
 export class DashboardComponent {
@@ -48,7 +48,10 @@ export class DashboardComponent {
   genres: string[] = [];
   filteredBooks = signal<Book[]>([]);
 
-  constructor(private apiService: ApiService, private authService: AuthService) {
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {
     effect(() => {
       const currentUser = this.authService.currentUser();
       this.isAuthenticated.set(!!currentUser);

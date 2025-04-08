@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ApiService } from '../../../service/api.service';
-import { Book } from '../../../service/book.model';
+import { Book } from '../../../service/models/book.model';
 import { CommonModule } from '@angular/common';
 
 @Component({

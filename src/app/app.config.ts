@@ -4,9 +4,9 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from '../service/auth.interceptor';
+import { authInterceptor } from '../service/interceptors/auth.interceptor';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { httpErrorInterceptor } from '../service/http-error.interceptor';
+// import { httpErrorInterceptor } from '../service/interceptors/http-error.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes),
       provideAnimationsAsync(),
-       provideHttpClient(withInterceptors([authInterceptor,httpErrorInterceptor])),
+       provideHttpClient(withInterceptors([authInterceptor])),
        {provide: MAT_DATE_LOCALE, useValue: 'ru-RU'}
       ]
 };

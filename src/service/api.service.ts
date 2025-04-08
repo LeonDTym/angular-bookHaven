@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Book } from './book.model';
-import { FavoriteBook } from './favorite-book.model';
+import { Book } from './models/book.model';
+import { FavoriteBook } from './models/favorite-book.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class ApiService {
   private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
-
+  // Тут я планировал ещё и параметры сортировки передавать но пока без этого
   getBooks(filters: { author?: string; isFavorite?: boolean }, sortBy?: string): Observable<Book[]> {
     const params = new HttpParams()
       .set('author_like', filters.author || '')
