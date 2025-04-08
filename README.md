@@ -1,6 +1,6 @@
 # Angular Final Task
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.5.
+Финальный проект ангуляр Angular CLI: 19.2.6
 
 ## Development server
 
