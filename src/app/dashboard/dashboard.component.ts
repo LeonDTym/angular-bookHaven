@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../service/api.service';
@@ -33,6 +34,7 @@ import { RouterModule } from '@angular/router';
     MatSelectModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatInputModule,
     RouterModule,
   ],
 })
@@ -47,6 +49,7 @@ export class DashboardComponent {
   authors: string[] = [];
   genres: string[] = [];
   filteredBooks = signal<Book[]>([]);
+  search = '';
 
   constructor(
     private apiService: ApiService,
@@ -145,6 +148,14 @@ export class DashboardComponent {
       books = books.filter(book => this.isBookFavorite(book.id));
     }
 
+    if (this.search) {
+      const searchTerm = this.search.toLowerCase();
+      books = books.filter(book => 
+        book.title.toLowerCase().includes(searchTerm) || 
+        book.author.toLowerCase().includes(searchTerm)
+      );
+    }
+
     if (this.sortBy) {
       books.sort((a, b) => {
         if (this.sortBy === 'title') {
@@ -157,5 +168,10 @@ export class DashboardComponent {
     }
 
     this.filteredBooks.set(books);
+
+    if(books.length == 0){
+      alert("Ничего не найдено");
+    }
+    //если ничего нет, надо бы сообщение показать на ui 
   }
 }

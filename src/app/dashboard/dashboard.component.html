@@ -18,6 +18,15 @@
   </mat-form-field>
 
   <mat-checkbox *ngIf="isAuthenticated()" [(ngModel)]="showFavorites" (change)="applyFilters()">Только избранное</mat-checkbox>
+  <div class="search-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Поиск</mat-label>
+      <input matInput type="text" [(ngModel)]="search" (keyup.enter)="applyFilters()" />
+      <button mat-icon-button matSuffix type="button" (click)="applyFilters()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
 </div>
 
 <div class="container">
@@ -26,13 +35,14 @@
       <img mat-card-image alt="img" [src]="book.img" />
       <mat-card-header>
         <mat-card-title>{{ book.title }}</mat-card-title>
-        <mat-card-subtitle>{{ book.author }}
-          <mat-chip-set> 
-            @for ( genre of book.genre; track $index) {
+        <mat-card-subtitle
+          >{{ book.author }}
+          <mat-chip-set>
+            @for (genre of book.genre; track $index) {
               <mat-chip>{{ genre }}</mat-chip>
             }
           </mat-chip-set>
-          </mat-card-subtitle>
+        </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ book.description }}</p>
@@ -44,7 +54,7 @@
           LIKE <mat-icon style="color: brown">favorite</mat-icon>
         </button>
         <button mat-button *ngIf="!isBookFavorite(book.id)" (click)="addToFavorites(book.id)">LIKE <mat-icon>favorite</mat-icon></button>
-        <button mat-icon-button [routerLink]="['/editbook/'+book.id]"><mat-icon>edit_square</mat-icon></button>
+        <button mat-icon-button [routerLink]="['/editbook/' + book.id]"><mat-icon>edit_square</mat-icon></button>
         <button mat-icon-button (click)="deleteBook(book.id)">
           <mat-icon>delete_forever</mat-icon>
         </button>
